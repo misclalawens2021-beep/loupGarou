@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Loup-Garou</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body class="nuit">
+
+  <!-- DÉCOR : un village sous la pleine lune, un loup qui hurle, la forêt.
+       Il bascule en "jour" (aube rougeoyante) pendant les phases de jour. -->
+  <svg id="decor" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+    <defs>
+      <linearGradient id="gNuit" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#04051a"/><stop offset=".6" stop-color="#17124a"/><stop offset="1" stop-color="#3b1f5e"/>
+      </linearGradient>
+      <linearGradient id="gJour" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#2b4c8c"/><stop offset=".6" stop-color="#e2825b"/><stop offset="1" stop-color="#ffcb72"/>
+      </linearGradient>
+      <radialGradient id="gLune">
+        <stop offset="0" stop-color="#fffbe0" stop-opacity=".95"/><stop offset=".35" stop-color="#fff2b0" stop-opacity=".28"/>
+        <stop offset="1" stop-color="#fff2b0" stop-opacity="0"/>
+      </radialGradient>
+      <radialGradient id="gSoleil">
+        <stop offset="0" stop-color="#fff6c0"/><stop offset=".3" stop-color="#ffb347" stop-opacity=".5"/>
+        <stop offset="1" stop-color="#ff8c42" stop-opacity="0"/>
+      </radialGradient>
+      <filter id="flou"><feGaussianBlur stdDeviation="16"/></filter>
+      <!-- Sapin réutilisable -->
+      <symbol id="pin" viewBox="0 0 60 120">
+        <path d="M30 0 L47 36 H39 L53 64 H43 L60 98 H36 V120 H24 V98 H0 L17 64 H7 L21 36 H13 Z"/>
+      </symbol>
+    </defs>
+
+    <rect width="1600" height="900" fill="url(#gNuit)"/>
+    <rect id="cielJour" width="1600" height="900" fill="url(#gJour)"/>
+    <g id="etoiles"></g>
+
+    <!-- Pleine lune -->
+    <g id="lune">
+      <circle cx="560" cy="230" r="330" fill="url(#gLune)"/>
+      <circle cx="560" cy="230" r="92" fill="#fff6c8"/>
+      <circle cx="532" cy="206" r="16" fill="#e9dca0"/><circle cx="590" cy="250" r="22" fill="#e9dca0"/>
+      <circle cx="548" cy="268" r="9" fill="#e9dca0"/><circle cx="596" cy="196" r="8" fill="#e9dca0"/>
+    </g>
+    <!-- Soleil levant (visible de jour) -->
+    <g id="soleil">
+      <circle cx="800" cy="580" r="300" fill="url(#gSoleil)"/>
+      <circle cx="800" cy="580" r="72" fill="#fff0b0"/>
+    </g>
+
+    <!-- Collines lointaines + forêt lointaine -->
+    <path class="colline loin" d="M0 640 C200 590 400 625 600 603 S1000 560 1200 600 S1500 612 1600 590 V900 H0Z"/>
+    <g class="arbre">
+      <use href="#pin" x="120" y="560" width="40" height="80"/><use href="#pin" x="170" y="575" width="34" height="68"/>
+      <use href="#pin" x="420" y="570" width="38" height="76"/><use href="#pin" x="700" y="555" width="42" height="84"/>
+      <use href="#pin" x="760" y="570" width="34" height="68"/><use href="#pin" x="1010" y="548" width="40" height="80"/>
+      <use href="#pin" x="1480" y="545" width="44" height="88"/>
+    </g>
+
+    <!-- Village : maisons aux fenêtres éclairées -->
+    <g class="maison">
+      <g transform="translate(880 690)"><rect width="70" height="55"/><path d="M-8 0 L35 -34 L78 0Z"/><rect x="52" y="-40" width="10" height="22"/>
+        <rect class="fenetre" x="14" y="16" width="12" height="14"/><rect class="fenetre" x="42" y="16" width="12" height="14"/></g>
+      <g transform="translate(1010 668)"><rect width="84" height="70"/><path d="M-9 0 L42 -42 L93 0Z"/><rect x="62" y="-44" width="11" height="26"/>
+        <rect class="fenetre" x="16" y="20" width="14" height="16"/><rect class="fenetre" x="52" y="20" width="14" height="16"/><rect class="fenetre" x="34" y="44" width="14" height="16"/></g>
+      <g transform="translate(1150 676)"><rect width="64" height="58"/><path d="M-8 0 L32 -32 L72 0Z"/>
+        <rect class="fenetre" x="12" y="16" width="12" height="14"/><rect class="fenetre" x="38" y="16" width="12" height="14"/></g>
+      <g transform="translate(1262 690)"><rect width="76" height="60"/><path d="M-9 0 L38 -38 L85 0Z"/><rect x="14" y="-40" width="10" height="24"/>
+        <rect class="fenetre" x="14" y="18" width="13" height="15"/><rect class="fenetre" x="46" y="18" width="13" height="15"/></g>
+      <g transform="translate(1390 700)"><rect width="60" height="52"/><path d="M-8 0 L30 -30 L68 0Z"/><rect class="fenetre" x="22" y="16" width="14" height="15"/></g>
+      <!-- Clocher -->
+      <g transform="translate(1495 640)"><rect width="40" height="110"/><path d="M-6 0 L20 -50 L46 0Z"/><rect class="fenetre" x="14" y="22" width="12" height="18"/></g>
+    </g>
+
+    <!-- Le loup qui hurle à la lune (silhouette) -->
+    <g class="loup" transform="translate(150 548) scale(1.15)">
+      <path d="M8 168 C0 140 10 110 28 98 C40 88 44 70 52 56 C56 48 56 40 60 32 C62 26 62 18 66 12 L70 4 L75 14
+               C84 10 98 2 114 0 L116 7 C106 13 98 17 90 23 C85 27 83 35 81 43 C83 55 85 65 83 77
+               C81 93 79 109 81 125 L86 168 Z"/>
+      <path d="M8 150 C-8 140 -14 118 -6 104 C-2 112 4 122 12 128 Z"/>
+    </g>
+
+    <!-- Colline proche -->
+    <path class="colline pres" d="M0 760 C250 700 450 742 700 732 S1150 692 1350 732 S1550 742 1600 722 V900 H0Z"/>
+
+    <!-- Grands sapins au premier plan -->
+    <g class="arbre proche">
+      <use href="#pin" x="-60" y="330" width="260" height="520"/><use href="#pin" x="120" y="520" width="170" height="340"/>
+      <use href="#pin" x="1400" y="360" width="250" height="500"/><use href="#pin" x="1300" y="560" width="150" height="300"/>
+      <use href="#pin" x="1520" y="520" width="170" height="340"/>
+    </g>
+
+    <!-- Brume au ras du sol -->
+    <ellipse class="brume" cx="400" cy="800" rx="520" ry="46" filter="url(#flou)"/>
+    <ellipse class="brume" cx="1200" cy="830" rx="560" ry="50" filter="url(#flou)"/>
+  </svg>
+
+  <main id="app"></main>
+  <div id="toast" role="status"></div>
+
+  <script src="/socket.io.min.js"></script>
+  <script src="/app.js"></script>
+</body>
+</html>
